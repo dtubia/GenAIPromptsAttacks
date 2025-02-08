@@ -1,0 +1,21 @@
+name: Log Requests
+
+on:
+  repository_dispatch: # Captura eventos personalizados desde clientes
+  workflow_dispatch: # Permite ejecución manual
+  issues: 
+    types: [opened, edited]
+
+jobs:
+  log_requests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Registrar la petición
+        run: |
+          echo "Nueva petición recibida en $(date)" >> requests.log
+          cat requests.log
+      - name: Subir el log como artefacto
+        uses: actions/upload-artifact@v4
+        with:
+          name: request-logs
+          path: requests.log
